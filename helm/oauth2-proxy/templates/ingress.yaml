@@ -4,8 +4,8 @@ metadata:
   name: kubecost-cost-analyzer
   namespace: kubecost
   annotations:
-    nginx.ingress.kubernetes.io/auth-url: "http://agic-demo.com/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://agic-demo.com/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
+    nginx.ingress.kubernetes.io/auth-url: "http://medium.oauth2.nginx/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://medium.oauth2.nginx/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
   labels:
     app: cost-analyzer
     app.kubernetes.io/instance: kubecost
@@ -18,7 +18,7 @@ spec:
    # - kubecost-kris.unicorndomain.com
    # secretName: kubecost-cost-analyzer-tls-cert
   rules:
-  - host: agic-demo.com
+  - host: medium.oauth2.nginx
     http:
       paths:
       - path: /oauth2
