@@ -15,15 +15,3 @@ config:
         oidc_issuer_url = "https://login.microsoftonline.com/86c45987-0984-4122-a84c-d713fcba108b/v2.0"
         provider = "oidc"
         provider_display_name = "Azure AD"
-ingress:
-    enabled: true
-    annotations:
-        kubernetes.io/ingress.class: azure/application-gateway
-        cert-manager.io/cluster-issuer: letsencrypt-kubecost
-        appgw.ingress.kubernetes.io/ssl-redirect: "true"
-    hosts:
-      - medium.oauth2.nginx
-    tls:
-    - hosts:
-      - medium.oauth2.nginx
-      secretName: kubecost-cert
