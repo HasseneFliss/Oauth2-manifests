@@ -136,6 +136,12 @@ serviceAccount:
 
 ingress:
     enabled: true
+    pathType: Prefix
+    backend:
+       service:
+         name: canary-demo
+         port:
+           name: 80
     annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://medium.oauth2.nginx/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://medium.oauth2.nginx/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
