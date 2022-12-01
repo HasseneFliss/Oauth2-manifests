@@ -129,7 +129,7 @@ backend:
              name: use-annotation
 annotations:
        nginx.ingress.kubernetes.io/auth-url: "https://medium-oauth2nginx.com/oauth2/auth"
-       nginx.ingress.kubernetes.io/auth-signin: "https://medium-oauth2nginx.com/oauth2/start?rd=https://test-nginxoauth2.com/oauth2/callback"
+       nginx.ingress.kubernetes.io/auth-signin: "https://medium-oauth2nginx.com/oauth2/start?rd=https://medium-oauth2nginx.com/oauth2/callback"
 tls:
        - secretName: chart-example-tls
          hosts:
