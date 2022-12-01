@@ -148,6 +148,7 @@ ingress:
         
     hosts:
       - medium.oauth2.nginx
+    - path: /*
     tls:
     - hosts:
       - medium.oauth2.nginx
