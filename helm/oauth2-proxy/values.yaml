@@ -133,9 +133,9 @@ serviceAccount:
   automountServiceAccountToken: true
   annotations: {}
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
+ingress:
+  enabled: false
+  
   name: Oauth2-ingress
   namespace: kubecost
   annotations:
