@@ -1,39 +1,30 @@
-{{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "oauth2-proxy.fullname" . -}}
-{{- $servicePort := .Values.service.portNumber -}}
-{{- $ingressPath := .Values.ingress.path -}}
-{{- $ingressPathType := .Values.ingress.pathType -}}
-{{- $extraPaths := .Values.ingress.extraPaths -}}
-apiVersion: {{ include "capabilities.ingress.apiVersion" . }}
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  labels:
-    app: {{ template "oauth2-proxy.name" . }}
-{{- include "oauth2-proxy.labels" . | indent 4 }}
-  name: {{ template "oauth2-proxy.fullname" . }}
-{{- with .Values.ingress.annotations }}
+  name: kubecost-cost-analyzer
+  namespace: kubecost
   annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+    nginx.ingress.kubernetes.io/auth-url: "http://agic-demo.com/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://agic-demo.com/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
+  labels:
+    app: cost-analyzer
+    app.kubernetes.io/instance: kubecost
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: cost-analyzer
 spec:
-  {{- if and .Values.ingress.className ( eq "true" ( include "ingress.supportsIngressClassName" . ) ) }}
-  ingressClassName: {{ .Values.ingress.className | quote }}
-  {{- end }}
+  ingressClassName: nginx
+   #tls:
+   #- hosts:
+   # - kubecost-kris.unicorndomain.com
+   # secretName: kubecost-cost-analyzer-tls-cert
   rules:
-    {{- range $host := .Values.ingress.hosts }}
-    - host: {{ $host | quote }}
-      http:
-        paths:
-{{- if $extraPaths }}
-{{ toYaml $extraPaths | indent 10 }}
-{{- end }}
-          - path: /oauth2
-            pathType: {{ $ingressPathType }}
-            {{- end }}
-            backend: {{- include "ingress.backend" ( dict "serviceName" $serviceName "servicePort" $servicePort "context" $ )  | nindent 14 }}
-    {{- end -}}
-  {{- if .Values.ingress.tls }}
-  tls:
-{{ toYaml .Values.ingress.tls | indent 4 }}
-  {{- end -}}
-{{- end -}}
+  - host: agic-demo.com
+    http:
+      paths:
+      - path: /oauth2
+        pathType: Prefix
+        backend:
+          service:
+            name: canary-demo
+            port:
+              number: 80
