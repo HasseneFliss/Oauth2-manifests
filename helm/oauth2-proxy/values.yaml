@@ -133,47 +133,19 @@ serviceAccount:
   automountServiceAccountToken: true
   annotations: {}
 
+
 ingress:
-  enabled: false
-  
-  name: Oauth2-ingress
-  namespace: kubecost
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /oauth2
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-name: "route"
-    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    nginx.ingress.kubernetes.io/proxy-body-size: "2000m"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    meta.helm.sh/release-name: kubecost
-    meta.helm.sh/release-namespace: kubecost
-    nginx.ingress.kubernetes.io/auth-url: "http://medium.oauth2.nginx/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://medium.oauth2.nginx/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
-  labels:
-    app: cost-analyzer
-    app.kubernetes.io/instance: kubecost
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: cost-analyzer
-spec:
-  ingressClassName: nginx
-   #tls:
-   #- hosts:
-   # - kubecost-kris.unicorndomain.com
-   # secretName: kubecost-cost-analyzer-tls-cert
-  rules:
-  - host: medium.oauth2.nginx
-    http:
-      paths:
-      - path: /oauth2
-        pathType: Prefix
-        backend:
-          service:
-            name: canary-demo
-            port:
-              number: 80
+    enabled: true
+    annotations:
+        nginx.ingress.kubernetes.io/auth-url: "http://medium.oauth2.nginx/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://medium.oauth2.nginx/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
+        
+    hosts:
+      - medium.oauth2.nginx
+    tls:
+    - hosts:
+      - medium.oauth2.nginx
+      secretName: kubecost-cert
       
 resources: {}
   # limits:
