@@ -5,7 +5,7 @@ metadata:
   namespace: kubecost
   annotations:
     nginx.ingress.kubernetes.io/auth-url: "http://medium-oauth2nginx.com/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://medium-oauth2nginx.com/oauth2/start?rd=https://agic-demo.com/oauth2/callback"
+    nginx.ingress.kubernetes.io/auth-signin: "http://medium-oauth2nginx.com/oauth2/start?rd=https://medium-oauth2nginx.com/oauth2/callback"
   labels:
     app: cost-analyzer
     app.kubernetes.io/instance: kubecost
