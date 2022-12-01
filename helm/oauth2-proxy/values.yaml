@@ -137,7 +137,6 @@ serviceAccount:
 ingress:
     enabled: true
     pathType: Prefix
-     - path: /*
     backend:
        service:
          name: canary-demo
