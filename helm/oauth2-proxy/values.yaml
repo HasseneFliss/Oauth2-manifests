@@ -1,23 +1,4 @@
-#config:
-#    clientID: 897f8c26-1033-4d60-98d6-f11bcf6d3894
-#    clientSecret: 4ua8Q~xFlFnPE60ge_r6azlJ2E5ebkGW37lH9dlT
-#    cookieSecret: zSqjVe4MQ3LVaERSUGFtrqixlfuAw4tT_R5jzl4rD5o=
-#    configFile: |-
-#        email_domains = "*"
-#        upstreams = [ "http://canary-demo.kubecost.svc.cluster.local:80" ]
-#        cookie_secure = "false"
-#        cookie_domains= [ "" ]
-#        whitelist_domains = [ "medium.oauth2.nginx" ]
-#        reverse_proxy = "true"
-#        silence_ping_logging = "true"
-#        # Auth0 provider
-#        redirect_url = "https://medium.oauth2.nginx/oauth2/callback"
-#        oidc_issuer_url = "https://login.microsoftonline.com/86c45987-0984-4122-a84c-d713fcba108b/v2.0"
-#        provider = "oidc"
-#        provider_display_name = "Azure AD"
-# Force the target Kubernetes version (it uses Helm `.Capabilities` if not set).
-# This is especially useful for `helm template` as capabilities are always empty
-# due to the fact that it doesn't query an actual cluster
+
 kubeVersion:
 
 # Oauth client configuration specifics
