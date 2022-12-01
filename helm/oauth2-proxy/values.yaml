@@ -1,3 +1,33 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@HasseneFliss 
+HasseneFliss
+/
+Oauth2-manifests
+Public
+forked from oauth2-proxy/manifests
+Code
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+Oauth2-manifests/helm/oauth2-proxy/values.yaml
+@HasseneFliss
+HasseneFliss Update values.yaml
+Latest commit ee72321 42 seconds ago
+ History
+ 23 contributors
+@HasseneFliss@nlamirault@pierluigilenoci@morarucostel@andrewnicolalde@roeizavida@aslafy-z@UiP9AV6Y@rlacko58@Palollo@nxf5025@lgthibault
+328 lines (293 sloc)  10.9 KB
+
 
 kubeVersion:
 
@@ -118,19 +148,19 @@ serviceAccount:
 ingress:
     enabled: true
     
-       hosts:
+hosts:
        - medium-oauth2nginx.com
-     path: /*
-     pathType: ImplementationSpecific
-     backend:
+path: /*
+pathType: ImplementationSpecific
+backend:
          service:
            name: ssl-redirect
            port:
              name: use-annotation
-     annotations:
+annotations:
        nginx.ingress.kubernetes.io/auth-url: "https://medium-oauth2nginx.com/oauth2/auth"
        nginx.ingress.kubernetes.io/auth-signin: "https://medium-oauth2nginx.com/oauth2/start?rd=https://test-nginxoauth2.com/oauth2/callback"
-     tls:
+tls:
        - secretName: chart-example-tls
          hosts:
            - medium-oauth2nginx.com
