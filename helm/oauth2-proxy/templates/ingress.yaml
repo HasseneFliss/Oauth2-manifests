@@ -1,30 +1,41 @@
-apiVersion: networking.k8s.io/v1
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "oauth2-proxy.fullname" . -}}
+{{- $servicePort := .Values.service.portNumber -}}
+{{- $ingressPath := .Values.ingress.path -}}
+{{- $ingressPathType := .Values.ingress.pathType -}}
+{{- $extraPaths := .Values.ingress.extraPaths -}}
+apiVersion: {{ include "capabilities.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
-  name: kubecost-cost-analyzer
-  namespace: kubecost
-  annotations:
-    nginx.ingress.kubernetes.io/auth-url: "http://medium-oauth2nginx.com/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://medium-oauth2nginx.com/oauth2/start?rd=https://medium-oauth2nginx.com/oauth2/callback"
   labels:
-    app: cost-analyzer
-    app.kubernetes.io/instance: kubecost
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: cost-analyzer
+    app: {{ template "oauth2-proxy.name" . }}
+{{- include "oauth2-proxy.labels" . | indent 4 }}
+  name: {{ template "oauth2-proxy.fullname" . }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+  namespace: kubecost
 spec:
-  ingressClassName: nginx
-   #tls:
-   #- hosts:
-   # - kubecost-kris.unicorndomain.com
-   # secretName: kubecost-cost-analyzer-tls-cert
+  {{- if and .Values.ingress.className ( eq "true" ( include "ingress.supportsIngressClassName" . ) ) }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+  {{- end }}
   rules:
-  - host: medium-oauth2nginx.com
-    http:
-      paths:
-      - path: /oauth2
-        pathType: Prefix
-        backend:
-          service:
-            name: canary-demo
-            port:
-              number: 80
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host | quote }}
+      http:
+        paths:
+{{- if $extraPaths }}
+{{ toYaml $extraPaths | indent 10 }}
+{{- end }}
+          - path: {{ $ingressPath }}
+            {{- if eq "true" ( include "ingress.supportsPathType" $ ) }}
+            pathType: {{ $ingressPathType }}
+            {{- end }}
+            backend: {{- include "ingress.backend" ( dict "serviceName" $serviceName "servicePort" $servicePort "context" $ )  | nindent 14 }}
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}
